@@ -44,15 +44,12 @@ export default function FormUploader() {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log("Response:", data);
           setResponseData(data);
           setLoading(false);
           router.replace("/hasil-analisis");
         })
         .catch((error) => {
-          console.error("Error:", error);
-          setLoading(false); // Reset loading state jika terjadi error
-          // Tangani error jika terjadi
+          setLoading(false);
         });
     }
   }
