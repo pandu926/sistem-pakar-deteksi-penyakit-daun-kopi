@@ -20,9 +20,7 @@ export default function Page() {
         <div className="grid grid-cols-3 p-2">
           <p className="font-semibold">Prediksi Penyakit</p>
           <p className="col-span-2">
-            {response.disease_detected === null
-              ? "-"
-              : response.disease_detected}
+            {response ? response.disease_detected : "-"}
           </p>
         </div>
       </div>
