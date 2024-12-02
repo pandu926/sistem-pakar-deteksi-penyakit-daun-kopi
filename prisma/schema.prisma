@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+model Penyakit {
+  id           Int              @id @default(autoincrement())
+  nama         String
+  kodePenyakit String           @unique
+  solusi       String
+  gejala       GejalaPenyakit[]
+}
+
+model Gejala {
+  id         Int              @id @default(autoincrement())
+  kodeGejala String           @unique
+  nama       String
+  gambar     String?
+  CF         Float
+  gejalaPenyakit GejalaPenyakit[]
+}
+
+model GejalaPenyakit {
+  id           Int      @id @default(autoincrement())
+  kodePenyakit String
+  kodeGejala   String
+
+  penyakit     Penyakit @relation(fields: [kodePenyakit], references: [kodePenyakit])
+  gejala       Gejala   @relation(fields: [kodeGejala], references: [kodeGejala])
+
+  // Composite unique constraint to avoid duplicates
+  @@unique([kodePenyakit, kodeGejala])
+}
+
+
+
