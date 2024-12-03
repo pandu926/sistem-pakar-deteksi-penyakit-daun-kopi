@@ -20,7 +20,7 @@ model Penyakit {
   nama         String
   kodePenyakit String           @unique
   solusi       String
-  gejala       GejalaPenyakit[]
+  gejala       manuk[]
 }
 
 model Gejala {
@@ -29,10 +29,10 @@ model Gejala {
   nama       String
   gambar     String?
   CF         Float
-  gejalaPenyakit GejalaPenyakit[]
+  gejalaPenyakit manuk[]
 }
 
-model GejalaPenyakit {
+model manuk {
   id           Int      @id @default(autoincrement())
   kodePenyakit String
   kodeGejala   String

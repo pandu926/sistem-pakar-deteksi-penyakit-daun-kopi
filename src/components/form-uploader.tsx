@@ -45,11 +45,13 @@ export default function FormUploader() {
         .then((response) => response.json())
         .then((data) => {
           setResponseData(data);
+          console.log(data);
           setLoading(false);
-          router.replace("/hasil-analisis");
+          router.replace("/hasil-analisis?q=karat daun");
         })
         .catch((error) => {
-          setLoading(false);
+          console.log(error);
+          // setLoading(false);
         });
     }
   }

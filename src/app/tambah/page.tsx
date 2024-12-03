@@ -29,28 +29,66 @@ const GejalaForm = () => {
   }, []);
 
   // Fungsi untuk mengunggah gambar dan mengirimkan form
-  const handleImageUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = event.target.files ? event.target.files[0] : null;
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
     if (file) {
-      setGambar(file);
+      if (file.type.startsWith("image/")) {
+        setGambar(file); // Simpan file yang dipilih
+      } else {
+        alert("File harus berupa gambar.");
+        setGambar(null); // Reset jika file bukan gambar
+      }
     }
   };
 
   // Fungsi untuk mengirimkan form
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+      if (!gambar) {
+        alert("Silakan pilih gambar sebelum mengirim.");
+        return; // Hentikan eksekusi jika gambar belum dipilih
+      }
 
-    const ok = await axios.post("https://api.pandusubekti.com/upload", {
-      image: gambar,
+      const imageData = new FormData();
+      imageData.append("image", gambar); // Tambahkan file gambar
+
+      const response = await axios.post(
+        "https://api.pandusubekti.com/upload",
+        imageData
+      );
+
+      handleGejala(response.data.fileName);
+
+      // const response = await axios.post(
+      //   "https://api.pandusubekti.com/upload",
+      //   formData
+      // );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleGejala = async (gam: string) => {
+    const CF = cf;
+    const response = await axios.post("http://localhost:3000/api/gejala", {
+      nama,
+      kodeGejala,
+      gambar: gam,
+      CF,
     });
+    handleManuk();
+  };
 
-    // const response = await axios.post(
-    //   "https://api.pandusubekti.com/upload",
-    //   formData
-    // );
-    console.log(ok);
+  const handleManuk = async () => {
+    const response = await axios.post(
+      "http://localhost:3000/api/gejalapenyakit",
+      {
+        kodePenyakit: selectedPenyakit,
+        kodeGejala,
+      }
+    );
+
+    alert("sukses");
   };
 
   return (
