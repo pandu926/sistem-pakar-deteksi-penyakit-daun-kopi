@@ -38,16 +38,38 @@ export default function FormUploader() {
 
       setLoading(true);
 
-      fetch(`${process.env.NEXT_PUBLIC_BASE_API}`, {
+      fetch(`${process.env.NEXT_PUBLIC_BASE_API}/predict`, {
         method: "POST",
         body: formData,
       })
         .then((response) => response.json())
         .then((data) => {
-          setResponseData(data);
-          console.log(data);
-          setLoading(false);
-          router.replace("/hasil-analisis?q=karat daun");
+          const onData = new FormData();
+          if (data.disease_detected == "leaf rust") {
+            onData.append("penyakit", "bercak kuning");
+            onData.append("akurasi", data.confidence);
+            const penyakit = onData.get("penyakit")?.toString() || "";
+            const akurasi = parseFloat(
+              onData.get("akurasi")?.toString() || "0"
+            );
+
+            // Kirim data ke Zustand
+            setResponseData({ penyakit, akurasi });
+            router.replace("/hasil-analisis");
+          } else if (
+            data.disease_detected == "phoma" ||
+            data.disease_detected == "cerscospora"
+          ) {
+            onData.append("penyakit", "karat daun");
+            onData.append("akurasi", data.confidence);
+            const penyakit = onData.get("penyakit")?.toString() || "";
+            const akurasi = parseFloat(
+              onData.get("akurasi")?.toString() || "0"
+            );
+            router.replace("/hasil-analisis");
+          } else {
+            alert("bukan daun kopi");
+          }
         })
         .catch((error) => {
           console.log(error);

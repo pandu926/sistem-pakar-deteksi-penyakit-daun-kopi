@@ -68,17 +68,17 @@ export async function POST(req: NextRequest) {
 //   }
 // }
 
-// // Handle DELETE requests
-// export async function DELETE(req: NextRequest) {
-//   try {
-//     const { id } = await req.json();
+// Handle DELETE requests
+export async function DELETE(req: NextRequest) {
+  try {
+    const { id } = await req.json();
 
-//     await prisma.manuk.delete({ where: { id } });
-//     return NextResponse.json({ message: "manuk deleted" }, { status: 200 });
-//   } catch (error) {
-//     return NextResponse.json(
-//       { error: error instanceof Error ? error.message : "Unknown error" },
-//       { status: 500 }
-//     );
-//   }
-// }
+    await prisma.manuk.delete({ where: { id } });
+    return NextResponse.json({ message: "manuk deleted" }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Unknown error" },
+      { status: 500 }
+    );
+  }
+}

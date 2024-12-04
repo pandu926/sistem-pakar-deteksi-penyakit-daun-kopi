@@ -16,9 +16,12 @@ const GeminiChat: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/chat", {
-        message,
-      });
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_API}/chat`,
+        {
+          message,
+        }
+      );
       const formattedResponse = formatGeminiResponse(response.data.response);
       setConversation((prev) => [...prev, `Gemini: ${formattedResponse}`]);
     } catch (error) {

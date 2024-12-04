@@ -70,7 +70,7 @@ const GejalaForm = () => {
   };
   const handleGejala = async (gam: string) => {
     const CF = cf;
-    const response = await axios.post("http://localhost:3000/api/gejala", {
+    const response = await axios.post("/api/gejala", {
       nama,
       kodeGejala,
       gambar: gam,
@@ -80,13 +80,10 @@ const GejalaForm = () => {
   };
 
   const handleManuk = async () => {
-    const response = await axios.post(
-      "http://localhost:3000/api/gejalapenyakit",
-      {
-        kodePenyakit: selectedPenyakit,
-        kodeGejala,
-      }
-    );
+    const response = await axios.post("/api/gejalapenyakit", {
+      kodePenyakit: selectedPenyakit,
+      kodeGejala,
+    });
 
     alert("sukses");
   };

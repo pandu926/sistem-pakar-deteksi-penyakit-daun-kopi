@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import useResponseStore from "@/lib/store";
 
 interface Gejala {
   id: number;
@@ -20,6 +21,7 @@ const CertaintyFactor: React.FC<CertaintyFactorProps> = ({
   const [results, setResults] = useState<{ penyakit: string; cf: number }[]>(
     []
   );
+  const { setResponseData } = useResponseStore();
   const router = useRouter();
   const calculateCF = () => {
     const hasil = Object.keys(selectedGejala).map((penyakitNama) => {
@@ -40,8 +42,15 @@ const CertaintyFactor: React.FC<CertaintyFactorProps> = ({
         cf: cfCombined,
       };
     });
-    console.log(hasil[0].penyakit);
-    router.replace("/hasil-analisis?q=karat daun");
+    const data = new FormData();
+    data.append("penyakit", hasil[0].penyakit);
+    data.append("akurasi", hasil[0].cf.toString());
+    const penyakit = data.get("penyakit")?.toString() || "";
+    const akurasi = parseFloat(data.get("akurasi")?.toString() || "0");
+
+    // Kirim data ke Zustand
+    setResponseData({ penyakit, akurasi });
+    router.replace("/hasil-analisis");
   };
 
   return (
