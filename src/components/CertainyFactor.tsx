@@ -8,11 +8,11 @@ interface Gejala {
   id: number;
   nama: string;
   kodeGejala: string;
-  CF: number; // Nilai CF untuk gejala
+  CF: number;
 }
 
 interface CertaintyFactorProps {
-  selectedGejala: Record<string, Gejala[]>; // Data gejala yang dipilih, setiap penyakit memiliki array gejalanya
+  selectedGejala: Record<string, Gejala[]>;
 }
 
 const CertaintyFactor: React.FC<CertaintyFactorProps> = ({
@@ -33,8 +33,8 @@ const CertaintyFactor: React.FC<CertaintyFactorProps> = ({
 
       // Menghitung CF untuk setiap penyakit berdasarkan gejala yang dipilih
       const cfCombined = gejalaArray.reduce((acc, gejala, index) => {
-        if (index === 0) return gejala.CF; // Mulai dengan CF dari gejala pertama
-        return acc + gejala.CF * (1 - acc); // Iterasi melalui gejala lainnya untuk menghitung CF gabungan
+        if (index === 0) return gejala.CF;
+        return acc + gejala.CF * (1 - acc);
       }, 0);
 
       return {
@@ -50,7 +50,7 @@ const CertaintyFactor: React.FC<CertaintyFactorProps> = ({
 
     // Kirim data ke Zustand
     setResponseData({ penyakit, akurasi });
-    router.replace("/hasil-analisis");
+    router.replace("/dashboard/hasil-analisis");
   };
 
   return (

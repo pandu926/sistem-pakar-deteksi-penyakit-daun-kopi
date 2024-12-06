@@ -1,8 +1,9 @@
 "use client";
 
-import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import Image from "next/image";
 import CertaintyFactor from "../CertainyFactor";
 
 interface Gejala {
@@ -24,7 +25,7 @@ interface GejalaPenyakit {
   kodePenyakit: string;
   kodeGejala: string;
   penyakit: Penyakit;
-  gambar: string; // URL gambar gejala
+  gambar: string;
   gejala: Gejala;
 }
 
@@ -35,6 +36,8 @@ export default function QuestionPage() {
   const [selectedGejala, setSelectedGejalaState] = useState<
     Record<string, Gejala[]>
   >({});
+  const [skippedIndices, setSkippedIndices] = useState<Set<number>>(new Set());
+
   const router = useRouter();
 
   const handleNext = () => {
@@ -43,10 +46,10 @@ export default function QuestionPage() {
       return;
     }
 
-    if (selectedAnswer === "ya") {
-      const currentGejala = questions[currentIndex].gejala;
-      const penyakitNama = questions[currentIndex].penyakit.nama;
+    const currentGejala = questions[currentIndex].gejala;
+    const penyakitNama = questions[currentIndex].penyakit.nama;
 
+    if (selectedAnswer === "ya") {
       setSelectedGejalaState((prev) => {
         const existingGejala = prev[penyakitNama] || [];
         return {
@@ -57,10 +60,24 @@ export default function QuestionPage() {
     }
 
     setSelectedAnswer("");
-    setCurrentIndex((prev) => prev + 1);
-  };
+    setCurrentIndex((prev) => {
+      let nextIndex = prev + 1;
 
-  const handleSubmit = () => {};
+      if (
+        selectedGejala["karat daun"]?.some(
+          (gejala) => gejala.kodeGejala == "g02"
+        )
+      ) {
+        setSkippedIndices((prevSkipped) => new Set(prevSkipped.add(3)));
+      }
+
+      while (nextIndex < questions.length && skippedIndices.has(nextIndex)) {
+        nextIndex++;
+      }
+
+      return nextIndex;
+    });
+  };
 
   const fetchGejala = async () => {
     try {
@@ -76,26 +93,29 @@ export default function QuestionPage() {
   }, []);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
-      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+    <div className="flex items-center justify-center min-h-screen px-4">
+      <div className="w-full max-w-4xl p-6 bg-white rounded-lg">
         {questions.length > 0 && currentIndex < questions.length ? (
           <div>
             {/* Gambar Gejala */}
-            <div className="flex justify-center mb-4">
-              <img
+            <div className="flex justify-center mb-4 md:mb-20">
+              <Image
                 src={`https://api.pandusubekti.com/uploads/${questions[currentIndex].gejala.gambar}`}
                 alt={questions[currentIndex].gejala.nama}
-                className="w-full max-w-xs h-auto rounded-lg shadow-md"
+                className="w-full max-w-lg h-auto rounded-lg shadow-md"
+                width={1000}
+                height={1000}
+                quality={100}
+                priority
               />
             </div>
 
             {/* Pertanyaan */}
-            <h2 className="mb-4 text-xl font-semibold text-gray-800 text-center">
+            <h2 className="mb-4 md:mb-20 text-xl font-semibold text-gray-800 text-center">
               Apakah Anda mengalami gejala berikut:{" "}
-              <span className="text-blue-500">
-                {questions[currentIndex].gejala.nama}
-              </span>
-              ?
+              <h1 className="text-blue-500">
+                {questions[currentIndex].gejala.nama} ?
+              </h1>
             </h2>
 
             {/* Jawaban */}
@@ -162,6 +182,7 @@ export default function QuestionPage() {
                 setCurrentIndex(0);
                 setSelectedAnswer("");
                 setSelectedGejalaState({});
+                setSkippedIndices(new Set()); // Reset skipped indices when restarting
               }}
               className="w-full px-2 py-2 text-white bg-gray-500 rounded hover:bg-gray-600 mt-2"
             >

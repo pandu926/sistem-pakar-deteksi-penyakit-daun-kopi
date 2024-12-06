@@ -1,44 +1,46 @@
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 export default function page() {
   return (
     <div>
-      <header className="bg-white shadow">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center">
-            <img
-              alt="KoCop Bot Logo"
-              className="h-10 w-10"
-              height={40}
-              src="https://storage.googleapis.com/a1aa/image/0BPJ44FEwD6SO54ZKIyrmPpNMVLSvf6EeGWl5PfUBZPfPrdPB.jpg"
-              width={40}
+      <header className="bg-white shadow px-2 md:px-20">
+        <div className="flex">
+          <div className=" w-3/4 md:w-4/5 flex">
+            <Image
+              src="/icon/KoCopLogo.png"
+              width={100}
+              height={100}
+              alt="logo"
             />
-            <span className="ml-2 text-xl font-bold">KoCop Bot</span>
+            <h1 className="py-12 md:py-10 text-xl md:text-2xl font-bold">
+              KoCop Bot
+            </h1>
           </div>
-          <nav className="space-x-4 hidden md:flex">
-            <a className="text-gray-700" href="#">
-              Deteksi
-            </a>
-            <a className="text-gray-700" href="#">
-              About
-            </a>
-            <Link
-              className="bg-black text-white px-4 py-2 rounded"
-              href="/login"
-            >
-              LOGIN
-            </Link>
-          </nav>
-          {/* Mobile Menu Toggle */}
-          <div className="md:hidden">
-            <button className="text-gray-700">☰</button>
+          <div className="w-2/6 py-10  ">
+            <div className=" flex justify-between   ">
+              <Link
+                href="#about "
+                className="text-xl font-bold hidden md:block"
+              >
+                Tentang
+              </Link>
+              <Link href="#team " className="text-xl font-bold hidden md:block">
+                Tim Kami
+              </Link>
+              <Link href="/login ">
+                <div className="text-xl font-bold px-5 md:px-10 bg-black py-1 rounded-md text-white">
+                  Login
+                </div>
+              </Link>
+            </div>
           </div>
         </div>
       </header>
       <main className="container mx-auto px-4 py-16">
         <div className="flex flex-col md:flex-row items-center">
-          <div className="w-full md:w-1/2 mt-14">
+          <div className="w-full md:w-1/2 mt-10">
             <h1 className="text-4xl font-bold">
               Welcome
               <br />
@@ -48,23 +50,25 @@ export default function page() {
               Gunakan metode Kepastian Faktor untuk mendiagnosis penyakit
               tanaman kopi secara akurat.
             </p>
-            <button className="mt-6 bg-black text-white px-6 py-2 rounded">
-              DETEKSI!
-            </button>
+            <Link href="/login">
+              <button className="mt-6 bg-black text-white px-6 py-2 rounded">
+                DETEKSI!
+              </button>
+            </Link>
           </div>
 
           <div className="w-full md:w-1/2 mt-6 md:mt-0">
-            <img
-              alt="Illustration of diagnostic tools and charts"
-              className="mx-auto"
-              height={300}
+            <Image
               src="/assets/cop.png"
               width={400}
+              height={200}
+              alt="yayaya"
+              className="ml-20"
             />
           </div>
         </div>
 
-        <section className="mt-24 text-center">
+        <section className="mt-24 text-center " id="about">
           <h2 className="text-3xl font-bold">Kenali Tanaman Kopimu</h2>
           <p className="mt-2 text-gray-600">
             Jelajahi solusi efektif untuk penyakit tanaman
@@ -88,50 +92,58 @@ export default function page() {
           </div>
         </section>
 
-        <section className="mt-16 text-center">
+        <section className="mt-16 text-center " id="team">
           <h2 className="text-3xl font-bold">Team Member</h2>
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white shadow-md rounded-lg p-6">
-              <img
+          <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 ">
+            <div className="rounded-lg p-6 flex flex-col  items-center ">
+              <Image
                 alt="Team member photo"
-                className="w-full h-40 object-cover rounded"
-                height={150}
-                src="https://storage.googleapis.com/a1aa/image/iKElVYnBKsZ3J5JpXspeTICALC0B6SX3Qqf2Mbax4Uaen1unA.jpg"
-                width={150}
+                className="w-2/4 h-96 object-cover rounded "
+                height={1000}
+                src="/assets/bara.jpeg"
+                quality={100} // Kualitas gambar
+                priority
+                width={1000}
               />
-              <h3 className="mt-4 text-lg font-bold">Ahmad Pandu Subekti</h3>
+              <h3 className="mt-4 text-lg font-bold">M Filly Andi Barbara</h3>
             </div>
-            <div className="bg-white shadow-md rounded-lg p-6">
-              <img
+            <div className=" rounded-lg p-6 flex flex-col  items-center">
+              <Image
                 alt="Team member photo"
-                className="w-full h-40 object-cover rounded"
-                height={150}
-                src="https://storage.googleapis.com/a1aa/image/iKElVYnBKsZ3J5JpXspeTICALC0B6SX3Qqf2Mbax4Uaen1unA.jpg"
-                width={150}
+                className="w-2/4 h-96 object-cover rounded"
+                height={1000}
+                src="/assets/bily.jpeg"
+                quality={100} // Kualitas gambar
+                priority
+                width={1000}
               />
               <h3 className="mt-4 text-lg font-bold">
                 Maulana Billy Nur Syava
               </h3>
             </div>
-            <div className="bg-white shadow-md rounded-lg p-6">
-              <img
+            <div className=" rounded-lg p-6 flex flex-col  items-center">
+              <Image
                 alt="Team member photo"
-                className="w-full h-40 object-cover rounded"
-                height={150}
-                src="https://storage.googleapis.com/a1aa/image/iKElVYnBKsZ3J5JpXspeTICALC0B6SX3Qqf2Mbax4Uaen1unA.jpg"
-                width={150}
+                className="w-2/4 h-96 object-cover rounded"
+                height={1000}
+                src="/assets/ling.jpeg"
+                quality={100} // Kualitas gambar
+                priority
+                width={1000}
               />
               <h3 className="mt-4 text-lg font-bold">Lingga Fajar Ramadhan</h3>
             </div>
-            <div className="bg-white shadow-md rounded-lg p-6">
-              <img
+            <div className=" rounded-lg p-6 flex flex-col  items-center">
+              <Image
                 alt="Team member photo"
-                className="w-full h-40 object-cover rounded"
-                height={150}
-                src="https://storage.googleapis.com/a1aa/image/iKElVYnBKsZ3J5JpXspeTICALC0B6SX3Qqf2Mbax4Uaen1unA.jpg"
-                width={150}
+                className="w-2/4 h-96 object-cover rounded"
+                height={1000}
+                src="/assets/pandu.jpeg"
+                quality={100} // Kualitas gambar
+                priority
+                width={1000}
               />
-              <h3 className="mt-4 text-lg font-bold">M Filly Andi Barbara</h3>
+              <h3 className="mt-4 text-lg font-bold">Ahmad Pandu Subekti</h3>
             </div>
           </div>
         </section>

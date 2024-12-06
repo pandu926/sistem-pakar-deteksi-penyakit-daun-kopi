@@ -66,7 +66,7 @@ export default function FormUploader() {
             const akurasi = parseFloat(
               onData.get("akurasi")?.toString() || "0"
             );
-            router.replace("/hasil-analisis");
+            router.replace("/dashboard/hasil-analisis");
           } else {
             alert("bukan daun kopi");
           }

@@ -90,7 +90,7 @@ export default function Page() {
           Kemungkinan Terkena Penyakit
         </p>
         <h1 className="flex justify-center text-2xl font-bold mb-10">
-          {penyakitDetail.penyakit}
+          {penyakitDetail.penyakit} : {response.akurasi * 100} %
         </h1>
         <h1 className="mb-10">Cara Penanganan:</h1>
         <ul className="list-disc pl-6">
